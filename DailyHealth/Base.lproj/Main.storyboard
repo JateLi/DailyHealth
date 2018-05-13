@@ -157,7 +157,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" text="Discription" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uxx-KE-6Hq">
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" text="Description" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uxx-KE-6Hq">
                                                     <rect key="frame" x="16" y="6" width="343" height="37"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
@@ -247,7 +247,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addWholeTableView" destination="BGj-x7-5Rr" id="Gxe-51-V2P"/>
-                        <outlet property="discriptionText" destination="uxx-KE-6Hq" id="RMg-ry-07a"/>
+                        <outlet property="descriptionText" destination="uxx-KE-6Hq" id="Tu6-uy-Kdb"/>
                         <outlet property="modeSwitch" destination="7kg-Lc-eY1" id="Gif-tq-5TL"/>
                         <outlet property="timePicker" destination="iIG-bK-3gA" id="OpB-Tx-KGf"/>
                         <outlet property="titleText" destination="Xai-21-Kuj" id="uCR-EH-Rii"/>

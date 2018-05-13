@@ -110,8 +110,9 @@ class AddNewHabitVC: UITableViewController {
     
     @IBAction func SaveAHabit(_ sender: Any) {
         print("SaveAHabit")
-        
-        
+        saveTitle()
+        saveDescription()
+        saveDate()
     }
     
     @IBAction func timePickerAction(_ sender: UIDatePicker) {
@@ -155,7 +156,7 @@ class AddNewHabitVC: UITableViewController {
             UserDefaults.standard.set(descriptionList,forKey: "description")
         }
     
-    // save the description local memory.
+    // save the date local memory.
     func saveDate(){
         let AddObject = UserDefaults.standard.object(forKey: "date")
         var dateList:[Date]

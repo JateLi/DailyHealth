@@ -7,27 +7,35 @@
 //
 
 import UIKit
+var titleList :[String] = []
+var descriptionOfHabit :[String] = []
+var timeList :[Date] = []
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     @IBOutlet weak var MainTableView: UITableView!
     
     @IBOutlet weak var addNewhabit: UIBarButtonItem!
     
-    var exampleList = ["PlayFPS","DrinkWater","EatPills","CleanYourRoom"]
-    var timeList = ["12","11","22","33"]
-    var descriptionOfHabit = ["nope","Okdokey","ssssss","joopjoop"]
+
     //date list?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exampleList.count
+        print(titleList.count)
+        return titleList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = MainTableView.dequeueReusableCell(withIdentifier: "customCell") as! CustomViewCell
         
-        cell.NameOfHabit.text = exampleList[indexPath.row]
+        cell.NameOfHabit.text = titleList[indexPath.row]
         cell.descriptionOfHabit.text = descriptionOfHabit[indexPath.row]
-        cell.StartTime.text = timeList[indexPath.row]
+      
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .short
+        dateFormat.timeStyle = .short
+        let a  = dateFormat.string(from:timeList[indexPath.row])
+        cell.StartTime.text = a
+        
         return cell
     
     }
@@ -44,6 +52,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     override func viewDidLoad() {
+
         MainTableView.delegate = self
         MainTableView.dataSource = self
         super.viewDidLoad()
@@ -54,9 +63,47 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //Put all local storage to local variable
+        titleList  = []
+        descriptionOfHabit = []
+        timeList = []
+
+        let titleObject = UserDefaults.standard.object(forKey: "title")
+        if (titleObject as? [String]) != nil{
+            titleList = titleObject as! [String]
+            print(titleObject ?? 0)
+        }
+        print(titleList)
+
+        let descriptionObject = UserDefaults.standard.object(forKey: "description")
+        if (descriptionObject as? [String]) != nil{
+            descriptionOfHabit = descriptionObject as! [String]
+            print(descriptionObject ?? 0)
+        }
+
+        let dateObject = UserDefaults.standard.object(forKey: "date")
+        if (dateObject as? [Date]) != nil{
+            timeList = dateObject as! [Date]
+            print(dateObject ?? 0)
+        }
+        
+        self.MainTableView.reloadData()
+
+    }
 
     @IBAction func AddNew(_ sender: Any) {
       self.performSegue(withIdentifier: "ToAddNewHabit", sender: nil)
+    }
+    
+    func dateToString(date:Date) -> String {
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .short
+        dateFormat.timeStyle = .short
+        
+        let a  = dateFormat.string(from:date)
+        return a
     }
 
     
