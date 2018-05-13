@@ -15,7 +15,7 @@ class AddNewHabitVC: UITableViewController {
     @IBOutlet weak var modeSwitch: UISegmentedControl!
     
     @IBOutlet weak var titleText: UITextField!
-    @IBOutlet weak var discriptionText: UITextField!
+    @IBOutlet weak var descriptionText: UITextField!
     
     @IBOutlet weak var timePicker: UIDatePicker!
     
@@ -126,5 +126,50 @@ class AddNewHabitVC: UITableViewController {
     func timePickerChanged(sender: UIDatePicker) {
         print("Selected date is: \(sender.date)")
     }
+    
+        // save the title local memory.
+        func saveTitle(){
+            let AddObject = UserDefaults.standard.object(forKey: "title")
+            var titleList:[String]
+    
+            if let tempAdd = AddObject as? [String]{
+                titleList = tempAdd
+                titleList.append(titleText.text!)
+            }else{
+                titleList = [titleText.text!]
+            }
+            UserDefaults.standard.set(titleList,forKey: "title")
+        }
+    
+        // save the description local memory.
+        func saveDescription(){
+            let AddObject = UserDefaults.standard.object(forKey: "description")
+            var descriptionList:[String]
+    
+            if let tempAdd = AddObject as? [String]{
+                descriptionList = tempAdd
+                descriptionList.append(titleText.text!)
+            }else{
+                descriptionList = [descriptionText.text!]
+            }
+            UserDefaults.standard.set(descriptionList,forKey: "description")
+        }
+    
+    // save the description local memory.
+    func saveDate(){
+        let AddObject = UserDefaults.standard.object(forKey: "date")
+        var dateList:[Date]
+        
+        if let tempAdd = AddObject as? [Date]{
+            dateList = tempAdd
+            dateList.append(timePicker.date)
+        }else{
+            dateList = [timePicker.date]
+        }
+        UserDefaults.standard.set(dateList,forKey: "date")
+    }
+    
+    
+    
 
 }
