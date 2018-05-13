@@ -13,16 +13,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var addNewhabit: UIBarButtonItem!
     
-    var ExampleList = ["PlayFPS","DrinkWater","EatPills","CleanYourRoom"]
+    var exampleList = ["PlayFPS","DrinkWater","EatPills","CleanYourRoom"]
+    var timeList = ["12","11","22","33"]
+    var descriptionOfHabit = ["nope","Okdokey","ssssss","joopjoop"]
+    //date list?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ExampleList.count
+        return exampleList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = MainTableView.dequeueReusableCell(withIdentifier: "customCell") as! CustomViewCell
         
-        cell.NameOfHabit.text = ExampleList[indexPath.row]
+        cell.NameOfHabit.text = exampleList[indexPath.row]
+        cell.descriptionOfHabit.text = descriptionOfHabit[indexPath.row]
+        cell.StartTime.text = timeList[indexPath.row]
         return cell
     
     }
@@ -30,6 +35,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){
+        // Remove all information related to that row
+        if editingStyle == UITableViewCellEditingStyle.delete{
+            print("Remove cell")
+        }
+    }
+    
     override func viewDidLoad() {
         MainTableView.delegate = self
         MainTableView.dataSource = self

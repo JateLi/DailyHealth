@@ -10,9 +10,21 @@ import UIKit
 
 class AddNewHabitVC: UITableViewController {
 
+    @IBOutlet var addWholeTableView: UITableView!
+    
+    @IBOutlet weak var modeSwitch: UISegmentedControl!
+    
+    @IBOutlet weak var titleText: UITextField!
+    @IBOutlet weak var discriptionText: UITextField!
+    
+    @IBOutlet weak var timePicker: UIDatePicker!
+    
+    
+    private var selectedTime: Date!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -34,7 +46,7 @@ class AddNewHabitVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        return 3
     }
 
     /*
@@ -96,4 +108,23 @@ class AddNewHabitVC: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func SaveAHabit(_ sender: Any) {
+        print("SaveAHabit")
+        
+        
+    }
+    
+    @IBAction func timePickerAction(_ sender: UIDatePicker) {
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .short
+        dateFormat.timeStyle = .short
+        
+      let a  = dateFormat.string(from: timePicker.date)
+        print(a)
+    }
+    
+    func timePickerChanged(sender: UIDatePicker) {
+        print("Selected date is: \(sender.date)")
+    }
+
 }

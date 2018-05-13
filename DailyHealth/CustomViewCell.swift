@@ -11,7 +11,11 @@ import UIKit
 class CustomViewCell: UITableViewCell {
 
     @IBOutlet weak var NameOfHabit: UILabel!
+    @IBOutlet weak var StartTime: UILabel!
+    @IBOutlet weak var descriptionOfHabit: UILabel!
     
+    @IBOutlet weak var openSwitch: UISwitch!
+     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
