@@ -10,6 +10,8 @@ import UIKit
 
 class CustomViewCell: UITableViewCell {
 
+    @IBOutlet weak var NameOfHabit: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

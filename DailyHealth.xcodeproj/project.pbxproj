@@ -14,6 +14,8 @@
 		6A51510820A54FF400525FF5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A51510620A54FF400525FF5 /* LaunchScreen.storyboard */; };
 		6A51511320A54FF400525FF5 /* DailyHealthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A51511220A54FF400525FF5 /* DailyHealthTests.swift */; };
 		6A51511E20A54FF400525FF5 /* DailyHealthUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A51511D20A54FF400525FF5 /* DailyHealthUITests.swift */; };
+		6A6FFFB320A7BC73009C24FE /* CustomViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FFFB220A7BC73009C24FE /* CustomViewCell.swift */; };
+		6A6FFFB720A7D3D4009C24FE /* AddNewHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FFFB620A7D3D4009C24FE /* AddNewHabitVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		6A51511920A54FF400525FF5 /* DailyHealthUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DailyHealthUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A51511D20A54FF400525FF5 /* DailyHealthUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyHealthUITests.swift; sourceTree = "<group>"; };
 		6A51511F20A54FF400525FF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A6FFFB220A7BC73009C24FE /* CustomViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewCell.swift; sourceTree = "<group>"; };
+		6A6FFFB620A7D3D4009C24FE /* AddNewHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewHabitVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +101,14 @@
 		6A5150FC20A54FF200525FF5 /* DailyHealth */ = {
 			isa = PBXGroup;
 			children = (
+				6A6FFFB220A7BC73009C24FE /* CustomViewCell.swift */,
 				6A5150FD20A54FF200525FF5 /* AppDelegate.swift */,
 				6A5150FF20A54FF200525FF5 /* ViewController.swift */,
 				6A51510120A54FF200525FF5 /* Main.storyboard */,
 				6A51510420A54FF400525FF5 /* Assets.xcassets */,
 				6A51510620A54FF400525FF5 /* LaunchScreen.storyboard */,
 				6A51510920A54FF400525FF5 /* Info.plist */,
+				6A6FFFB620A7D3D4009C24FE /* AddNewHabitVC.swift */,
 			);
 			path = DailyHealth;
 			sourceTree = "<group>";
@@ -257,6 +263,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A51510020A54FF200525FF5 /* ViewController.swift in Sources */,
+				6A6FFFB320A7BC73009C24FE /* CustomViewCell.swift in Sources */,
+				6A6FFFB720A7D3D4009C24FE /* AddNewHabitVC.swift in Sources */,
 				6A5150FE20A54FF200525FF5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
