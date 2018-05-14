@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class AddNewHabitVC: UITableViewController {
 
@@ -94,15 +95,6 @@ class AddNewHabitVC: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func BackToPrevious(_ sender: Any) {
         print("CheckBackButton")
         dismiss(animated: true, completion: nil)
@@ -113,6 +105,7 @@ class AddNewHabitVC: UITableViewController {
         saveTitle()
         saveDescription()
         saveDate()
+        saveNotificationID()
     }
     
     @IBAction func timePickerAction(_ sender: UIDatePicker) {
@@ -169,7 +162,51 @@ class AddNewHabitVC: UITableViewController {
         }
         UserDefaults.standard.set(dateList,forKey: "date")
     }
+   
+    //send notification to system
+    func notificatonSender(UniqueID:String){
+        let content = UNMutableNotificationContent()
+        
+        content.title = "title"
+        content.subtitle = "Subtitle"
+        content.body = "Body"
+        let calander = Calendar(identifier: .gregorian)
+        let triggerDate = calander.dateComponents([.year,.month,.day,.hour,.minute], from: timePicker.date)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching:triggerDate, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UniqueID, content: content, trigger:trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
     
+    //Save & Make a Notification
+    func saveNotificationID(){
+        let currentDate = Date()
+        let TempID = NSUUID().uuidString
+        var UniqueID:String;
+        UniqueID = TempID
+        
+        print("UniqueID\(UniqueID)")
+        let UUIDObject = UserDefaults.standard.object(forKey: "UniqueID")
+        
+        var UUID:[String]
+        
+        if let tempUUID = UUIDObject as? [String]{
+            UUID = tempUUID
+            UUID.append(UniqueID)
+        }else{
+            UUID = [UniqueID]
+        }
+        print("UniqueID\(UniqueID)")
+        
+        UserDefaults.standard.set(UUID,forKey: "UniqueID")
+        if currentDate < (timePicker.date){
+            notificatonSender(UniqueID: UniqueID)
+        }
+        
+        
+    }
     
     
 
