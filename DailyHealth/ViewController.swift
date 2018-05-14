@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import UserNotifications
+
 var titleList :[String] = []
 var descriptionOfHabit :[String] = []
 var timeList :[Date] = []
+var notificationID:[String] = []
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     @IBOutlet weak var MainTableView: UITableView!
@@ -47,7 +50,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){
         // Remove all information related to that row
         if editingStyle == UITableViewCellEditingStyle.delete{
-            print("Remove cell")
+            print("Remove cell\(indexPath.row)")
+            let Id = notificationID[indexPath.row]
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [Id])
+            findDateNeedDelete(UniqueID: Id)
+           
+            refreshDate()
+            self.MainTableView.reloadData()
+            
         }
     }
     
@@ -89,6 +100,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             print(dateObject ?? 0)
         }
         
+        let UUIDObject = UserDefaults.standard.object(forKey: "UniqueID")
+        if (UUIDObject as? [String]) != nil{
+            notificationID = UUIDObject as! [String]
+            print(UUIDObject ?? 0)
+        }
+        
         self.MainTableView.reloadData()
 
     }
@@ -104,6 +121,32 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let a  = dateFormat.string(from:date)
         return a
+    }
+    
+    func findDateNeedDelete(UniqueID: String){
+        for  i in (0..<notificationID.count).reversed() {
+            if UniqueID==notificationID[i]{
+                titleList.remove(at: i)
+                descriptionOfHabit.remove(at: i)
+                timeList.remove(at: i)
+                notificationID.remove(at: i)
+            }
+        }
+    }
+    
+    //Refresh Local storage
+    public func refreshDate(){
+        _ = UserDefaults.standard.object(forKey: "title")
+        UserDefaults.standard.set(titleList,forKey: "title")
+        
+        _ = UserDefaults.standard.object(forKey: "description")
+        UserDefaults.standard.set(descriptionOfHabit,forKey: "description")
+        
+        _ = UserDefaults.standard.object(forKey: "date")
+        UserDefaults.standard.set(timeList,forKey: "date")
+        
+        _ = UserDefaults.standard.object(forKey: "UniqueID")
+        UserDefaults.standard.set(notificationID,forKey: "UniqueID")
     }
 
     
