@@ -9,7 +9,7 @@
 import UIKit
 import UserNotifications
 
-class AddNewHabitVC: UITableViewController {
+class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
 
     @IBOutlet var addWholeTableView: UITableView!
     

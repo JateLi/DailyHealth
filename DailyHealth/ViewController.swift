@@ -13,12 +13,14 @@ var titleList :[String] = []
 var descriptionOfHabit :[String] = []
 var timeList :[Date] = []
 var notificationID:[String] = []
+var filteredIndexes: [Int] = []
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UNUserNotificationCenterDelegate{
     @IBOutlet weak var MainTableView: UITableView!
     
     @IBOutlet weak var addNewhabit: UIBarButtonItem!
     
+     //private var filteredIndexes: [Int] = []
 
     //date list?
     
@@ -32,7 +34,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         cell.NameOfHabit.text = titleList[indexPath.row]
         cell.descriptionOfHabit.text = descriptionOfHabit[indexPath.row]
-      
+       // cell.openSwitch.isOn = false
+       
+        // Assign switches with tags for easy tracking
+        cell.openSwitch.tag = indexPath.row
+        
         let dateFormat = DateFormatter()
         dateFormat.dateStyle = .short
         dateFormat.timeStyle = .short
@@ -149,6 +155,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         UserDefaults.standard.set(notificationID,forKey: "UniqueID")
     }
 
+    @IBAction func SwitchChanged(_ sender: UISwitch) {
+        _ = sender.tag
+        if(sender.isOn){
+            print("On\(sender.tag)")
+        }else{
+             print("Off\(sender.tag)")
+        }
+    }
     
 }
 

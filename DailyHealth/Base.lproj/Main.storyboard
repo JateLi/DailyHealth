@@ -63,6 +63,9 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3Y-5U-HU2">
                                                     <rect key="frame" x="301" y="32" width="49" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="SwitchChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="NUo-pq-PgV"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="StartTime" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUD-RW-HH6">
                                                     <rect key="frame" x="31" y="0.0" width="228" height="32"/>
@@ -85,6 +88,7 @@
                                             <outlet property="NameOfHabit" destination="H6A-KM-rDq" id="Bkl-GE-a3T"/>
                                             <outlet property="StartTime" destination="sUD-RW-HH6" id="Dh1-XO-ksc"/>
                                             <outlet property="descriptionOfHabit" destination="lW9-s1-k97" id="YmW-4N-Ipv"/>
+                                            <outlet property="openSwitch" destination="l3Y-5U-HU2" id="e8j-vt-xjV"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
