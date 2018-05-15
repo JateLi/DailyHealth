@@ -13,7 +13,7 @@ var titleList :[String] = []
 var descriptionOfHabit :[String] = []
 var timeList :[Date] = []
 var notificationID:[String] = []
-var filteredIndexes: [Int] = []
+var switchButtonState: [Bool] = []
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UNUserNotificationCenterDelegate{
     @IBOutlet weak var MainTableView: UITableView!
@@ -34,10 +34,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         cell.NameOfHabit.text = titleList[indexPath.row]
         cell.descriptionOfHabit.text = descriptionOfHabit[indexPath.row]
-       // cell.openSwitch.isOn = false
        
         // Assign switches with tags for easy tracking
         cell.openSwitch.tag = indexPath.row
+        cell.openSwitch.isOn = switchButtonState[indexPath.row]
         
         let dateFormat = DateFormatter()
         dateFormat.dateStyle = .short
@@ -86,13 +86,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         titleList  = []
         descriptionOfHabit = []
         timeList = []
+        switchButtonState = []
 
         let titleObject = UserDefaults.standard.object(forKey: "title")
         if (titleObject as? [String]) != nil{
             titleList = titleObject as! [String]
             print(titleObject ?? 0)
         }
-        print(titleList)
 
         let descriptionObject = UserDefaults.standard.object(forKey: "description")
         if (descriptionObject as? [String]) != nil{
@@ -110,6 +110,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if (UUIDObject as? [String]) != nil{
             notificationID = UUIDObject as! [String]
             print(UUIDObject ?? 0)
+        }
+        
+        let stateObject = UserDefaults.standard.object(forKey: "state")
+        if (stateObject as? [Bool]) != nil{
+            switchButtonState = stateObject as! [Bool]
+            print(stateObject ?? 0)
         }
         
         self.MainTableView.reloadData()
@@ -136,6 +142,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 descriptionOfHabit.remove(at: i)
                 timeList.remove(at: i)
                 notificationID.remove(at: i)
+                switchButtonState.remove(at: i)
             }
         }
     }
@@ -153,16 +160,43 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         _ = UserDefaults.standard.object(forKey: "UniqueID")
         UserDefaults.standard.set(notificationID,forKey: "UniqueID")
+        
+        _ = UserDefaults.standard.object(forKey: "state")
+        UserDefaults.standard.set(switchButtonState,forKey: "state")
     }
 
     @IBAction func SwitchChanged(_ sender: UISwitch) {
         _ = sender.tag
         if(sender.isOn){
             print("On\(sender.tag)")
+            switchButtonState[sender.tag] = true
+            notificatonSender(UniqueID: notificationID[sender.tag], date: timeList[sender.tag])
         }else{
              print("Off\(sender.tag)")
+             switchButtonState[sender.tag] = false
+            let Id = notificationID[sender.tag]
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [Id])
         }
+        refreshDate()
+        
     }
+    
+    //send notification to system
+    func notificatonSender(UniqueID:String, date:Date){
+        let content = UNMutableNotificationContent()
+        
+        content.title = "title"
+        content.subtitle = "Subtitle"
+        content.body = "Body"
+        let calander = Calendar(identifier: .gregorian)
+        let triggerDate = calander.dateComponents([.year,.month,.day,.hour,.minute], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching:triggerDate, repeats: false)
+        let request = UNNotificationRequest(identifier: UniqueID, content: content, trigger:trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
     
 }
 

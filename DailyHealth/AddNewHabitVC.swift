@@ -47,7 +47,12 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        if(section == 0){
+            return 3
+        }else{
+            return 4
+        }
+      
     }
 
     /*
@@ -106,6 +111,7 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         saveDescription()
         saveDate()
         saveNotificationID()
+        saveState()
     }
     
     @IBAction func timePickerAction(_ sender: UIDatePicker) {
@@ -204,8 +210,20 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         if currentDate < (timePicker.date){
             notificatonSender(UniqueID: UniqueID)
         }
+    }
+    
+    // save the title local memory.
+    func saveState(){
+        let StateObject = UserDefaults.standard.object(forKey: "state")
+        var stateList:[Bool]
         
-        
+        if let tempState = StateObject as? [Bool]{
+            stateList = tempState
+            stateList.append(true)
+        }else{
+            stateList = [true]
+        }
+        UserDefaults.standard.set(stateList,forKey: "state")
     }
     
     
