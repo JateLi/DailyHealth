@@ -20,6 +20,7 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     
     @IBOutlet weak var timePicker: UIDatePicker!
     
+    @IBOutlet weak var repeatTimePicker: UIDatePicker!
     
     private var selectedTime: Date!
     
@@ -54,6 +55,16 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         }
       
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.section)
+        print(indexPath.row)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return super.tableView.rowHeight
+    }
+    
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
