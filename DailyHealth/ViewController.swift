@@ -14,6 +14,8 @@ var descriptionOfHabit :[String] = []
 var timeList :[Date] = []
 var notificationID:[String] = []
 var switchButtonState: [Bool] = []
+var timeIntervalList: [TimeInterval] = []
+var repeatMode:[Int] = []
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UNUserNotificationCenterDelegate{
     @IBOutlet weak var MainTableView: UITableView!
@@ -32,8 +34,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = MainTableView.dequeueReusableCell(withIdentifier: "customCell") as! CustomViewCell
         
+        if(repeatMode[indexPath.row] == 0){
+             cell.descriptionOfHabit.text = descriptionOfHabit[indexPath.row]
+        }else{
+            cell.descriptionOfHabit.text = "Repeat in n seconds"
+        }
         cell.NameOfHabit.text = titleList[indexPath.row]
-        cell.descriptionOfHabit.text = descriptionOfHabit[indexPath.row]
+       
        
         // Assign switches with tags for easy tracking
         cell.openSwitch.tag = indexPath.row
@@ -86,7 +93,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         titleList  = []
         descriptionOfHabit = []
         timeList = []
+        timeIntervalList = []
         switchButtonState = []
+        repeatMode = []
 
         let titleObject = UserDefaults.standard.object(forKey: "title")
         if (titleObject as? [String]) != nil{
@@ -104,6 +113,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if (dateObject as? [Date]) != nil{
             timeList = dateObject as! [Date]
             print(dateObject ?? 0)
+        }
+        
+        let countObject = UserDefaults.standard.object(forKey: "timeInterval")
+        if (countObject as? [TimeInterval]) != nil{
+            timeIntervalList = countObject as! [TimeInterval]
+            print(countObject ?? 0)
+        }
+        
+        let modeObject = UserDefaults.standard.object(forKey: "mode")
+        if (modeObject as? [Int]) != nil{
+            repeatMode = modeObject as! [Int]
+            print(modeObject ?? 0)
         }
         
         let UUIDObject = UserDefaults.standard.object(forKey: "UniqueID")
@@ -141,6 +162,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 titleList.remove(at: i)
                 descriptionOfHabit.remove(at: i)
                 timeList.remove(at: i)
+                timeIntervalList.remove(at: i)
+                repeatMode.remove(at: i)
                 notificationID.remove(at: i)
                 switchButtonState.remove(at: i)
             }
@@ -158,6 +181,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         _ = UserDefaults.standard.object(forKey: "date")
         UserDefaults.standard.set(timeList,forKey: "date")
         
+        _ = UserDefaults.standard.object(forKey: "timeInterval")
+        UserDefaults.standard.set(timeIntervalList,forKey: "timeInterval")
+        
+        _ = UserDefaults.standard.object(forKey: "mode")
+        UserDefaults.standard.set(repeatMode,forKey: "mode")
+        
         _ = UserDefaults.standard.object(forKey: "UniqueID")
         UserDefaults.standard.set(notificationID,forKey: "UniqueID")
         
@@ -170,7 +199,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if(sender.isOn){
             print("On\(sender.tag)")
             switchButtonState[sender.tag] = true
-            notificatonSender(UniqueID: notificationID[sender.tag], date: timeList[sender.tag])
+            if(repeatMode[sender.tag] == 0){
+                notificatonSender(UniqueID: notificationID[sender.tag], date: timeList[sender.tag])
+            }else{
+                repeatNotificatonSender(UniqueID: notificationID[sender.tag], timeInterval: timeIntervalList[sender.tag])
+            }
         }else{
              print("Off\(sender.tag)")
              switchButtonState[sender.tag] = false
@@ -194,6 +227,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let trigger = UNCalendarNotificationTrigger(dateMatching:triggerDate, repeats: false)
         let request = UNNotificationRequest(identifier: UniqueID, content: content, trigger:trigger)
         
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    //send notification to system
+    func repeatNotificatonSender(UniqueID:String,timeInterval: TimeInterval){
+        let content = UNMutableNotificationContent()
+        content.title = "ModeRepeat"
+        content.subtitle = "Repeat"
+        content.body = "Body"
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: true)
+        let request = UNNotificationRequest(identifier: UniqueID, content: content, trigger:trigger)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     

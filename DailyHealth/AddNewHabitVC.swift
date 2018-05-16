@@ -25,6 +25,7 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     private var selectedTime: Date!
     private var selectedInterval: Int! = 0
     
+    
     private var repeatMode: Int! = 0
     
     override func viewDidLoad() {
@@ -106,41 +107,6 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     }
     */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     @IBAction func BackToPrevious(_ sender: Any) {
         print("CheckBackButton")
         dismiss(animated: true, completion: nil)
@@ -151,6 +117,8 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         saveTitle()
         saveDescription()
         saveDate()
+        saveTimeInterval()
+        saveNotificationMode()
         saveNotificationID()
         saveState()
     }
@@ -167,8 +135,8 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
             selectedIntervalMinutes = selectedInterval % 3600 / 60
         }
         
-        print(selectedIntervalHours)
-        print(selectedIntervalMinutes)
+        print(selectedInterval)
+        //print(selectedIntervalMinutes)
        // convertIntervalAndDisplay(hour: selectedIntervalHours, minute: selectedIntervalMinutes)
     }
     
@@ -226,7 +194,35 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         }
         UserDefaults.standard.set(dateList,forKey: "date")
     }
-   
+    
+    // save the timeInterval local memory.
+    func saveTimeInterval(){
+        let AddObject = UserDefaults.standard.object(forKey: "timeInterval")
+        var countDownList:[TimeInterval]
+        
+        if let tempAdd = AddObject as? [TimeInterval]{
+            countDownList = tempAdd
+            countDownList.append(repeatTimePicker.countDownDuration)
+        }else{
+            countDownList = [repeatTimePicker.countDownDuration]
+        }
+        UserDefaults.standard.set(countDownList,forKey: "timeInterval")
+    }
+    
+    // save the notificaiton mode to local memory.
+    func saveNotificationMode(){
+        let AddObject = UserDefaults.standard.object(forKey: "mode")
+        var modeList:[Int]
+        
+        if let tempAdd = AddObject as? [Int]{
+            modeList = tempAdd
+            modeList.append(repeatMode)
+        }else{
+            modeList = [repeatMode]
+        }
+        UserDefaults.standard.set(modeList,forKey: "mode")
+    }
+
     //send notification to system
     func notificatonSender(UniqueID:String){
         let content = UNMutableNotificationContent()
@@ -251,6 +247,8 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         content.subtitle = "Repeat"
         content.body = "Body"
         
+        
+       
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: repeatTimePicker.countDownDuration, repeats: true)
         
         let request = UNNotificationRequest(identifier: UniqueID, content: content, trigger:trigger)
@@ -285,7 +283,7 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
             if currentDate < (timePicker.date){
                 notificatonSender(UniqueID: UniqueID)
             }
-        }else{
+        }else if (repeatMode == 1){
            repeatNotificatonSender(UniqueID: UniqueID)
         }
 
