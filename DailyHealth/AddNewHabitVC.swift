@@ -23,7 +23,9 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     @IBOutlet weak var repeatTimePicker: UIDatePicker!
     
     private var selectedTime: Date!
+    private var selectedInterval: Int! = 0
     
+    private var repeatMode: Int! = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,12 +59,40 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.section)
-        print(indexPath.row)
+       //Mode Switch
+        if(repeatMode == 0 ){
+            if(indexPath.section == 1 && indexPath.row == 2){
+                print(indexPath.section)
+                print(indexPath.row)
+                repeatMode = 1
+            }
+        }else if repeatMode == 1{
+            if(indexPath.section == 1 && indexPath.row == 0){
+                print(indexPath.section)
+                print(indexPath.row)
+                repeatMode = 0
+            }
+        }
+        self.addWholeTableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return super.tableView.rowHeight
+        
+            if(indexPath.section == 1 && indexPath.row == 3){
+               if(repeatMode == 0){
+                return 0
+               }else{
+                return super.tableView.rowHeight
+                }
+            }
+            if(indexPath.section == 1 && indexPath.row == 1){
+                 if(repeatMode == 0){
+                    return super.tableView.rowHeight
+                 }else{
+                    return 0
+                }
+            }
+             return super.tableView.rowHeight
     }
     
 
@@ -125,6 +155,23 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         saveState()
     }
     
+    @IBAction func intervalTimePicker(_ sender: UIDatePicker) {
+        var selectedIntervalHours: Int
+        var selectedIntervalMinutes: Int
+        
+        selectedInterval = Int(sender.countDownDuration)
+        selectedIntervalHours = selectedInterval / 3600
+        if selectedIntervalHours == 0{
+            selectedIntervalMinutes = selectedInterval / 60
+        } else{
+            selectedIntervalMinutes = selectedInterval % 3600 / 60
+        }
+        
+        print(selectedIntervalHours)
+        print(selectedIntervalMinutes)
+       // convertIntervalAndDisplay(hour: selectedIntervalHours, minute: selectedIntervalMinutes)
+    }
+    
     @IBAction func timePickerAction(_ sender: UIDatePicker) {
         let dateFormat = DateFormatter()
         dateFormat.dateStyle = .short
@@ -139,7 +186,7 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     }
     
         // save the title local memory.
-        func saveTitle(){
+    func saveTitle(){
             let AddObject = UserDefaults.standard.object(forKey: "title")
             var titleList:[String]
     
@@ -153,7 +200,7 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         }
     
         // save the description local memory.
-        func saveDescription(){
+    func saveDescription(){
             let AddObject = UserDefaults.standard.object(forKey: "description")
             var descriptionList:[String]
     
@@ -183,10 +230,10 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
     //send notification to system
     func notificatonSender(UniqueID:String){
         let content = UNMutableNotificationContent()
-        
         content.title = "title"
         content.subtitle = "Subtitle"
         content.body = "Body"
+        
         let calander = Calendar(identifier: .gregorian)
         let triggerDate = calander.dateComponents([.year,.month,.day,.hour,.minute], from: timePicker.date)
         
@@ -196,6 +243,21 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
+    
+    //send notification to system
+    func repeatNotificatonSender(UniqueID:String){
+        let content = UNMutableNotificationContent()
+        content.title = "ModeRepeat"
+        content.subtitle = "Repeat"
+        content.body = "Body"
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: repeatTimePicker.countDownDuration, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UniqueID, content: content, trigger:trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+
     
     //Save & Make a Notification
     func saveNotificationID(){
@@ -218,9 +280,15 @@ class AddNewHabitVC: UITableViewController, UNUserNotificationCenterDelegate {
         print("UniqueID\(UniqueID)")
         
         UserDefaults.standard.set(UUID,forKey: "UniqueID")
-        if currentDate < (timePicker.date){
-            notificatonSender(UniqueID: UniqueID)
+        
+        if(repeatMode == 0){
+            if currentDate < (timePicker.date){
+                notificatonSender(UniqueID: UniqueID)
+            }
+        }else{
+           repeatNotificatonSender(UniqueID: UniqueID)
         }
+
     }
     
     // save the title local memory.

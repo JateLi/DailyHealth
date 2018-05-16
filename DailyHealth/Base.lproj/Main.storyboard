@@ -246,6 +246,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="548043089.222188">
                                                         <!--2018-05-15 02:11:29 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="intervalTimePicker:" destination="d9u-Uv-1R3" eventType="valueChanged" id="LoK-h8-jrO"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
